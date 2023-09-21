@@ -1,25 +1,18 @@
-"""from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request
 from config import Config
 from app.database import DatabaseConnection
 
 def init_app():
     app = Flask(__name__, static_folder=Config.STATIC_FOLDER, template_folder=Config.TEMPLATE_FOLDER)
     app.config.from_object(Config)
-"""
-from flask import Flask, jsonify, request
-from config import Config
-from app.database import DatabaseConnection  # Asegúrate de que la importación sea correcta
 
-def init_app():
-    app = Flask(__name__, static_folder=Config.STATIC_FOLDER, template_folder=Config.TEMPLATE_FOLDER)
-    app.config.from_object(Config)
     
     # 1.1. Obtener un cliente
     # GET /customers/<int:customer_id>
 
     @app.route('/customers/<int:customer_id>', methods=['GET'])
     def get_customer(customer_id):
-        sql = "SELECT customer_id, first_name, last_name, email, phone, street, city, state, zip_code FROM sail.customer WHERE customer_id = %s;"
+        sql = "SELECT customer_id, first_name, last_name, email, phone, street, city, state, zip_code FROM sales.customers; WHERE customer_id = %s;"
         params = (customer_id,)
         result = DatabaseConnection.fetch_one(sql, params)
 
@@ -43,10 +36,10 @@ def init_app():
     # 1.2. Obtener el listado de clientes
     # GET /customers
 
-    @app.route('/customers', methods=['GET'])
+    @app.route('/customers1', methods=['GET'])
     def get_customers():
         state = request.args.get('state', default=None, type=str)
-        sql = "SELECT customer_id, first_name, last_name, email, phone, street, city, state, zip_code FROM sales.customer"
+        sql = "SELECT customer_id, first_name, last_name, email, phone, street, city, state, zip_code FROM sales.customer;"
         params = ()
 
         if state:
@@ -125,7 +118,7 @@ def init_app():
 
     # 1.5. Eliminar un cliente
     # DELETE /customers/<int:customer_id>
-    @app.route('/customers/<int:customer_id>', methods=['DELETE'])
+    @app.route('/customers2/<int:customer_id>', methods=['DELETE'])
     def delete_customer(customer_id):
         sql = "DELETE FROM sales.customer WHERE customer_id = %s"
         params = (customer_id,)
@@ -171,7 +164,7 @@ def init_app():
     # 2.2. Obtener un listado de productos
     # GET /products
 
-    @app.route('/products', methods=['GET'])
+    @app.route('/products2', methods=['GET'])
     def get_products():
         brand_id = request.args.get('brand_id')
         category_id = request.args.get('category_id')
@@ -216,7 +209,7 @@ def init_app():
 
     # 2.4. Modificar un producto
     # PUT /products/<int:product_id>
-    @app.route('/products/<int:product_id>', methods=['PUT'])
+    @app.route('/products3/<int:product_id>', methods=['PUT'])
     def update_product(product_id):
         data = request.json
 
@@ -244,7 +237,7 @@ def init_app():
 
     # 2.5. Eliminar un producto
     # DELETE /products/<int:product_id>
-    @app.route('/products/<int:product_id>', methods=['DELETE'])
+    @app.route('/products4/<int:product_id>', methods=['DELETE'])
     def delete_product(product_id):
         global products
         products = [p for p in products if p["product_id"] != product_id]
