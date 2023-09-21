@@ -1,11 +1,19 @@
-from flask import Flask, jsonify, request
+"""from flask import Flask, jsonify, request
 from config import Config
 from app.database import DatabaseConnection
 
 def init_app():
     app = Flask(__name__, static_folder=Config.STATIC_FOLDER, template_folder=Config.TEMPLATE_FOLDER)
     app.config.from_object(Config)
+"""
+from flask import Flask, jsonify, request
+from config import Config
+from app.database import DatabaseConnection  # Asegúrate de que la importación sea correcta
 
+def init_app():
+    app = Flask(__name__, static_folder=Config.STATIC_FOLDER, template_folder=Config.TEMPLATE_FOLDER)
+    app.config.from_object(Config)
+    
     # 1.1. Obtener un cliente
     # GET /customers/<int:customer_id>
 
